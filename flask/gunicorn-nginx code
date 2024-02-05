@@ -1,0 +1,42 @@
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
+
+
+from myproject import app
+
+if __name__ == "__main__":
+    app.run()
+
+[Unit]
+Description=Gunicorn instance to serve myproject
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/myproject
+Environment="PATH=/home/ubuntu/myproject/myprojectenv/bin"
+ExecStart=/home/ubuntu/myproject/myprojectenv/bin/gunicorn --workers 3 --bind unix:myproject.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+#nginx
+
+server {
+    listen 80;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/myproject/myproject.sock;
+    }
+}
