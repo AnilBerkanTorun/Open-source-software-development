@@ -1,0 +1,6 @@
+flask 
+Flask_restful 
+pandas 
+sqlalchemy 
+flask_sqlalchemy 
+request 
