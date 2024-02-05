@@ -1,0 +1,15 @@
+import requests
+
+def  get_random_coffee_image():
+    url = "https://coffee.alexflipnote.dev/random/200/300"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        with open ("randomcoffee.jpg,""wb") as file :
+            file.write(response.content)
+        print(response.json())
+    else:
+        print(f"Error: {response.status_code}")
+
+#02200201013 Anıl Berkan Torun
+#rastgele kahve resimlerini listeleyen apı sorgusu 
